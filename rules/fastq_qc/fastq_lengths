@@ -1,0 +1,24 @@
+rule fastq_lengths:
+    input:
+        "raw_data/{fq_pref}.fastq.gz"
+    output:
+        "analysis/fastq_lengths/{fq_pref}.sample{n_reads}.seed{seed}.fq_lens.txt",
+    params:
+        #n_reads=100000,
+        #seed=lambda wilcards: wildcards.seed,
+    log:
+        err="logs/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.e"
+    benchmark:
+        "benchmarks/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.txt"
+    envmodules:
+        "bbc/seqtk/seqtk-1.3-r115-dirty"
+    threads: 1
+    resources: 
+        mem_gb = 16
+    shell:
+        """
+        # see https://www.biostars.org/p/72433/
+        seqtk sample -s{wildcards.seed} {input} {wildcards.n_reads} | \
+        awk '{{if(NR%4==2) print length($1)}}' | sort -n | uniq -c \
+        1>{output} 2>{log.err}
+        """
