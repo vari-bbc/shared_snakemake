@@ -1,4 +1,7 @@
 rule fastq_lengths:
+    """
+    Use seqtk to randomly subsample reads and print the read lengths. Seed and number of reads for subsampling are determined from the output file name.
+    """
     input:
         "raw_data/{fq_pref}.fastq.gz"
     output:
