@@ -7,7 +7,7 @@ rule fastq_lengths:
         #n_reads=100000,
         #seed=lambda wilcards: wildcards.seed,
     log:
-        err="logs/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.e"
+        stderr="logs/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.e"
     benchmark:
         "benchmarks/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.txt"
     envmodules:
@@ -20,5 +20,5 @@ rule fastq_lengths:
         # see https://www.biostars.org/p/72433/
         seqtk sample -s{wildcards.seed} {input} {wildcards.n_reads} | \
         awk '{{if(NR%4==2) print length($1)}}' | sort -n | uniq -c \
-        1>{output} 2>{log.err}
+        1>{output}
         """
