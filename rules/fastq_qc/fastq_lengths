@@ -7,6 +7,7 @@ rule fastq_lengths:
         #n_reads=100000,
         #seed=lambda wilcards: wildcards.seed,
     log:
+        stdout="logs/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.o",
         stderr="logs/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.e"
     benchmark:
         "benchmarks/fastq_lengths/{fq_pref}.{n_reads}reads.{seed}seed.txt"
