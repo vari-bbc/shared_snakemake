@@ -1,0 +1,25 @@
+rule fastqc:
+    """
+    Run fastqc on raw_data/ files.
+    """
+    input:
+        "raw_data/{fq_pref}.fastq.gz"
+    output:
+        html="analysis/fastqc/{fq_pref}_fastqc.html",
+        zip="analysis/fastqc/{fq_pref}_fastqc.zip"
+    params:
+        outdir="analysis/fastqc/"
+    log:
+        stdout="logs/fastqc/{fq_pref}.o",
+        stderr="logs/fastqc/{fq_pref}.e"
+    benchmark:
+        "benchmarks/fastqc/{fq_pref}.txt"
+    envmodules:
+        "bbc/fastqc/fastqc-0.11.9"
+    threads: 1
+    resources: 
+        mem_gb = 32
+    shell:
+        """
+        fastqc --outdir {params.outdir} {input}
+        """
