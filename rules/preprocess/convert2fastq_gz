@@ -1,0 +1,49 @@
+# These 3 rules convert fq, fastq, fq.gz to fastq.gz, respectively.
+
+rule fq2fastq_gz:
+    """
+    Convert fq to fastq.gz.
+    """
+    input: "raw_data/{sample}.fq"
+    output: "raw_data/{sample}.fastq.gz"
+    log:
+        stdout = "logs/conv2fastq_gz/{sample}.o",
+        stderr =  "logs/conv2fastq_gz/{sample}.e" 
+    benchmark: "benchmarks/conv2fastq_gz/{sample}.txt"
+    envmodules: "bbc/pigz/pigz-2.4"
+    threads: 8
+    resources: 
+        mem_gb = 32
+    shell: 'pigz -p {threads} --stdout {input} > {output}'
+
+rule fastq2fastq_gz:
+    """
+    Convert fastq to fastq.gz.
+    """
+    input: "raw_data/{sample}.fastq"
+    output: "raw_data/{sample}.fastq.gz"
+    log:
+        stdout = "logs/conv2fastq_gz/{sample}.o",
+        stderr =  "logs/conv2fastq_gz/{sample}.e" 
+    benchmark: "benchmarks/conv2fastq_gz/{sample}.txt"
+    envmodules: "bbc/pigz/pigz-2.4"
+    threads: 8
+    resources: 
+        mem_gb = 32
+    shell: 'pigz -p {threads} --stdout {input} > {output}'
+
+rule fq_gz2fastq_gz:
+    """
+    Convert fq.gz to fastq.gz.
+    """
+    input: "raw_data/{sample}.fq.gz"
+    output: "raw_data/{sample}.fastq.gz"
+    log:
+        stdout = "logs/conv2fastq_gz/{sample}.o",
+        stderr =  "logs/conv2fastq_gz/{sample}.e"
+    params: input_file = lambda wildcards, input: os.path.basename(input[0]) 
+    benchmark: "benchmarks/conv2fastq_gz/{sample}.txt"
+    threads: 1
+    resources: 
+        mem_gb = 1
+    shell: 'ln -s {params.input_file} {output}'
