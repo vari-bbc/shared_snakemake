@@ -11,7 +11,7 @@ rule fq2fastq_gz:
         stderr =  "logs/conv2fastq_gz/{sample}.e" 
     benchmark: "benchmarks/conv2fastq_gz/{sample}.txt"
     envmodules: "bbc/pigz/pigz-2.4"
-    threads: 8
+    threads: 4
     resources: 
         mem_gb = 32
     shell: 'pigz -p {threads} --stdout {input} > {output}'
@@ -27,7 +27,7 @@ rule fastq2fastq_gz:
         stderr =  "logs/conv2fastq_gz/{sample}.e" 
     benchmark: "benchmarks/conv2fastq_gz/{sample}.txt"
     envmodules: "bbc/pigz/pigz-2.4"
-    threads: 8
+    threads: 4
     resources: 
         mem_gb = 32
     shell: 'pigz -p {threads} --stdout {input} > {output}'
