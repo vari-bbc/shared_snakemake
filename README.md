@@ -13,6 +13,7 @@ Table of Contents
       * [fq2fastq_gz](#fq2fastq_gz)
       * [fastq2fastq_gz](#fastq2fastq_gz)
       * [fq_gz2fastq_gz](#fq_gz2fastq_gz)
+      * [mosdepth](#mosdepth)
 
 # Assumptions
 
@@ -31,7 +32,7 @@ Rules in this repo are written with the following assumptions. If your project w
 
 4. Go into README.md and remove the old rules documentation.
 
-5. Update the TOC (see 'gh-md-toc').
+5. Update the TOC, either manually or using 'gd-md-toc' (https://github.com/ekalinin/github-markdown-toc).
 
 # Rules
 
@@ -58,4 +59,8 @@ Convert fastq to fastq.gz.
 ## fq_gz2fastq_gz
 
 Convert fq.gz to fastq.gz.
+
+## mosdepth
+
+Run mosdepth for summary of chromosome coverage. Excludes reads with MAPQ < 20 or any of the bits in SAM flag 1796.
 

@@ -1,0 +1,23 @@
+rule mosdepth:
+    """
+    Run mosdepth for summary of chromosome coverage. Excludes reads with MAPQ < 20 or any of the bits in SAM flag 1796.
+    """
+    input:
+        "analysis/{align_dirname}/{bam_name}.bam"
+    output:
+        expand("analysis/{{align_dirname}}/mosdepth/{{bam_name}}.{suff}", suff=["mosdepth.global.dist.txt", "mosdepth.summary.txt"])
+    params:
+    log:
+        stdout="logs/mosdepth/{align_dirname}/{bam_name}.o",
+        stderr="logs/mosdepth/{align_dirname}/{bam_name}.e"
+    benchmark:
+        "benchmarks/mosdepth/{align_dirname}/{bam_name}.txt"
+    envmodules:
+        "bbc/mosdepth/mosdepth-0.2.6"
+    threads: 8
+    resources: 
+        mem_gb = 32
+    shell:
+        """
+        mosdepth --threads {threads} --mapq 20 --no-per-base --flag 1796 analysis/{wildcards.align_dirname}/mosdepth/{wildcards.bam_name} {input}  
+        """
