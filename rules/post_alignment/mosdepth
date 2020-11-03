@@ -8,10 +8,10 @@ rule mosdepth:
         expand("analysis/{{align_dirname}}/mosdepth/{{bam_name}}.{suff}", suff=["mosdepth.global.dist.txt", "mosdepth.summary.txt"])
     params:
     log:
-        stdout="logs/mosdepth/{align_dirname}/{bam_name}.o",
-        stderr="logs/mosdepth/{align_dirname}/{bam_name}.e"
+        stdout="logs/{align_dirname}/mosdepth/{bam_name}.o",
+        stderr="logs/{align_dirname}/mosdepth/{bam_name}.e"
     benchmark:
-        "benchmarks/mosdepth/{align_dirname}/{bam_name}.txt"
+        "benchmarks/{align_dirname}/mosdepth/{bam_name}.txt"
     envmodules:
         "bbc/mosdepth/mosdepth-0.2.6"
     threads: 8
