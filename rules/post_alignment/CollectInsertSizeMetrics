@@ -1,0 +1,25 @@
+rule CollectInsertSizeMetrics:
+    """
+    Run Picard CollectInsertSizeMetrics.
+    """
+    input:
+        "analysis/{align_dirname}/{bam_name}.bam"
+    output:
+        out="analysis/{align_dirname}/CollectInsertSizeMetrics/{bam_name}.insert_size_metrics.txt",
+        hist="analysis/{align_dirname}/CollectInsertSizeMetrics/{bam_name}.insert_size_histogram.pdf"
+    params:
+        temp="./analysis/{align_dirname}/CollectInsertSizeMetrics/"
+    log:
+        stdout="logs/{align_dirname}/CollectInsertSizeMetrics/{bam_name}.o",
+        stderr="logs/{align_dirname}/CollectInsertSizeMetrics/{bam_name}.e"
+    benchmark:
+        "benchmarks/{align_dirname}/CollectInsertSizeMetrics/{bam_name}.txt"
+    envmodules:
+        "bbc/picard/picard-2.23.3"
+    threads: 4
+    resources: 
+        mem_gb = 64
+    shell:
+        """
+        java -Xms8g -Xmx{resources.mem_gb}g -Djava.io.tmpdir={params.temp} -jar $PICARD CollectInsertSizeMetrics I={input} O={output.out} H={output.hist}  
+        """
